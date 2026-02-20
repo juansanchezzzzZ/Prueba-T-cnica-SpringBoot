@@ -58,7 +58,7 @@ public class VentaService implements IVentaService {
 
         //lista de detalles
         List<DetalleVenta> detalles = new ArrayList<>();
-
+        Double totalCalculado = 0.0;
 
         for (DetalleVentaDTO detDTO : ventaDto.getDetalle()) {
             // Buscar producto por id
@@ -74,12 +74,13 @@ public class VentaService implements IVentaService {
             detalleVenta.setVenta(venta);
 
             detalles.add(detalleVenta);
+            totalCalculado = totalCalculado + (detalleVenta.getPrecio()*detDTO.getCantProd());
         }
         venta.setDetalle(detalles);
 
         // guardamos en la bd
 
-        ventaRepo.save(venta);
+        venta = ventaRepo.save(venta);
 
         return Mapper.toDTO(venta);
 
